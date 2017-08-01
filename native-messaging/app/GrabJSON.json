@@ -1,0 +1,7 @@
+{
+  "name": "GrabJSON",
+  "description": "Grab json data from the sign.html page and pass it to the native python script GrabJSON.py",
+  "path": "E:\\OMI\\CryptoTokenUtility\\batch_file\\GrabJSON.bat",
+  "type": "stdio",
+  "allowed_extensions": ["GrabJSON@example.org"]
+}
