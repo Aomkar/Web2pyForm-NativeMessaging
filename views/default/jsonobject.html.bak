@@ -1,0 +1,101 @@
+{{extend 'layout.html'}}
+<html>
+    <head>
+        <title>SJFC</title>
+    </head>
+    <body onload="messageContentScript()">
+
+        <h1>This is the default/jsonobject.html template</h1>
+        <!--{{=jsonobj}}-->
+        <h3>
+            {{=DIV(jsonobj, _id="json_data")}}
+        </h3>
+        <BR>
+        <!--
+        <button id="submit">
+            Submit
+        </button>
+        -->
+        <BR><BR>
+
+
+            <form style="display:none" id="tempform" enctype="multipart/form-data" action="{{=URL('so_submit')}}" method="post">
+                <input name="AO" id="AO" />
+                <input name="SO" id="SO" />
+                <input type="submit" />
+            </form>
+
+
+
+
+        <script>
+            /*
+            var x = document.getElementById('json_data').innerHTML;
+            document.write(x);
+            console.log(x)
+            */
+
+            var c = 0;
+
+
+            var x = document.getElementById("json_data").innerHTML.trim();
+            /*
+                    var messenger = document.getElementById("submit");
+
+                    messenger.addEventListener("click", messageContentScript);
+                    */
+
+            document.getElementById("AO").value = x;
+
+
+            function messageContentScript() {
+                if (c == 0) {
+                    window.postMessage({
+                        direction: "from-page-script",
+                        message: x
+                    }, "*");
+                }
+                c += 1;
+            }
+
+
+            //-----------------------------------------------------------------------------------------------    
+
+            // Listening for any message from the content script...
+
+            window.addEventListener("message", function(event) {
+                if (event.source == window &&
+                    event.data.direction &&
+                    event.data.direction == "from-content-script") {
+
+                    var msg_from_native = event.data.message;
+
+                    alert("Page script received message: \"" + event.data.message + "\"");
+
+                    var so = document.getElementById("SO");
+                    so.value = msg_from_native;
+
+                    
+                    if (c == 1) {
+                         document.getElementById("tempform").submit();
+                        
+                        var child = document.getElementById("tempform");
+                        child.parentNode.removeChild(child);
+                    }
+                    
+                    
+                    
+
+
+
+
+
+                }
+            });
+
+        </script>
+
+
+
+    </body>
+</html>
